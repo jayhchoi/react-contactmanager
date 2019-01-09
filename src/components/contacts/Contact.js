@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
-import { Consumer } from "../context";
-import contactsAPI from "../apis/contacts";
+import { Consumer } from "../../context";
+import contactsAPI from "../../apis/contacts";
 
 class Contact extends Component {
   state = {
@@ -31,10 +32,10 @@ class Contact extends Component {
           return (
             <div className="card card-body mb-3">
               <h4>
-                {name}{" "}
+                {name}
                 <i
                   onClick={this.onToggleClick}
-                  className="fas fa-sort-down"
+                  className="fas fa-sort-down ml-2"
                   style={{ cursor: "pointer" }}
                 />
                 <i
@@ -42,6 +43,12 @@ class Contact extends Component {
                   style={{ cursor: "pointer", color: "red" }}
                   onClick={() => this.onDeleteClick(id, dispatch)}
                 />
+                <Link to={`/edit/${id}`}>
+                  <i
+                    className="fas fa-pencil-alt fa-sm float-right mr-3"
+                    style={{ cursor: "pointer" }}
+                  />
+                </Link>
               </h4>
               {showContact ? (
                 <ul className="list-group">

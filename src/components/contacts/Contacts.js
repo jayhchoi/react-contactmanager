@@ -1,14 +1,17 @@
 import React, { Component } from "react";
+import _ from "lodash";
 
 import Contact from "./Contact";
-import { Consumer } from "../context";
+import { Consumer } from "../../context";
 // import contactsAPI from "../apis/contacts";
 
 class Contacts extends Component {
   renderContacts(contacts) {
-    return contacts.map(contact => {
-      return <Contact key={contact.id} contact={contact} />;
-    });
+    return _.sortBy(contacts, ["id"])
+      .reverse()
+      .map(contact => {
+        return <Contact key={contact.id} contact={contact} />;
+      });
   }
 
   render() {
@@ -22,7 +25,12 @@ class Contacts extends Component {
           }
 
           return (
-            <React.Fragment>{this.renderContacts(contacts)}</React.Fragment>
+            <React.Fragment>
+              <h1 className="display-4 mb-4">
+                <span className="text-danger">Contact</span> List
+              </h1>
+              {this.renderContacts(contacts)}
+            </React.Fragment>
           );
         }}
       </Consumer>
