@@ -1,48 +1,32 @@
 import React, { Component } from "react";
 
 import Contact from "./Contact";
-import contactsAPI from "../apis/contacts";
+import { Consumer } from "../context";
+// import contactsAPI from "../apis/contacts";
 
 class Contacts extends Component {
-  state = { contacts: [] };
-
-  componentDidMount = async () => {
-    const response = await contactsAPI.get("");
-
-    this.setState({ contacts: response.data });
-  };
-
   renderContacts(contacts) {
     return contacts.map(contact => {
-      return (
-        <Contact
-          key={contact.id}
-          contact={contact}
-          deleteClickHandler={this.deleteClickHandler}
-        />
-      );
+      return <Contact key={contact.id} contact={contact} />;
     });
   }
 
-  deleteClickHandler = async id => {
-    const response = await contactsAPI.delete(`/${id}`);
-    if (response.status === 200) {
-      const newContacts = this.state.contacts.filter(
-        contact => contact.id !== id
-      );
-
-      this.setState({ contacts: newContacts });
-    }
-  };
-
   render() {
-    const { contacts } = this.state;
+    return (
+      <Consumer>
+        {state => {
+          const { contacts } = state;
 
-    if (contacts.length === 0) {
-      return <React.Fragment>Loading...</React.Fragment>;
-    }
+          if (contacts.length === 0) {
+            return <React.Fragment>Loading...</React.Fragment>;
+          }
 
-    return <React.Fragment>{this.renderContacts(contacts)}</React.Fragment>;
+          return (
+            <React.Fragment>{this.renderContacts(contacts)}</React.Fragment>
+          );
+        }}
+      </Consumer>
+    );
   }
 }
 
